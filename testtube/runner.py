@@ -1,6 +1,6 @@
 import re
 
-import conf
+from testtube import conf
 
 
 def _inspect_path(path, pattern):

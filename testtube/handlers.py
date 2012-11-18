@@ -1,6 +1,6 @@
 from watchdog.events import FileSystemEventHandler
 
-from runner import run_tests
+from testtube.runner import run_tests
 
 
 class PyChangeHandler(FileSystemEventHandler):
