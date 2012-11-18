@@ -11,7 +11,7 @@ setup(
     author_email='thomas.welfley+testtube@gmail.com',
     description='Testtube watches a specified directory for file changes '
                 'and runs a set of defined tests against those files whenever'
-                ' a chance occurs.',
+                ' a change occurs.',
     packages=find_packages(),
     scripts=['testtube/bin/stir'],
     classifiers=[
