@@ -2,7 +2,6 @@ from setuptools import setup, find_packages
 
 from testtube import __version__, __author__
 
-print find_packages()
 
 setup(
     name="testtube",
