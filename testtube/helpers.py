@@ -1,7 +1,5 @@
 import subprocess
 
-import conf
-
 
 def pep8(changed, **kwargs):
     """Runs the pep8 checker against the changed file."""
@@ -31,8 +29,9 @@ def nosetests_all(changed, **kwargs):
 
 def _required(module_name):
     """If the specified module is not available, raise an import error with
-    a helpful error."""
+    a helpful error.
 
+    """
     try:
         __import__(module_name)
     except:
@@ -41,5 +40,6 @@ def _required(module_name):
 
 
 def _short_path(path):
-    """Remove conf.path from a given path."""
-    return path.partition("%s%s" % (conf.SRC_DIR, '/'))[2]
+    """Remove conf.SRC_DIRc from a given path."""
+    import testtube.conf
+    return path.partition("%s%s" % (testtube.conf.SRC_DIR, '/'))[2]
