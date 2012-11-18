@@ -3,11 +3,11 @@ import time
 
 from watchdog.observers import Observer
 
-import conf
-from handlers import PyChangeHandler
+from testtube import conf
+from testtube.handlers import PyChangeHandler
 
 
-if __name__ == '__main__':
+def main():
     # Configure the app based on passed arguments
     conf.configure(*conf.get_arguments())
 
@@ -15,7 +15,7 @@ if __name__ == '__main__':
     observer.schedule(PyChangeHandler(), conf.SRC_DIR, recursive=True)
     observer.start()
 
-    print "testtube is now watching for changes...\n"
+    print "testtube is now watching %s for changes...\n" % conf.SRC_DIR
 
     try:
         while True:
