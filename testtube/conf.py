@@ -17,10 +17,13 @@ def get_arguments():
         description='Watch a directory and run a custom set of tests whenever'
                     ' a file changes.')
     parser.add_argument(
-        'src_dir', type=str, help='The directory to watch for changes.')
+        '--src_dir', type=str, default=os.getcwd(),
+        help='The directory to watch for changes. (Defaults to CWD)')
     parser.add_argument(
         '--settings', type=str, default='tube',
-        help='The testtube settings module that defines which tests to run.')
+        help='The testtube settings module that defines which tests to run.'
+             ' (Defaults to "tube" - your settings module must be importable'
+             ' from your current working directory)')
     args = parser.parse_args()
 
     return args.src_dir, args.settings
