@@ -12,8 +12,8 @@ utility.
 ## Installation
 
 
-Before installing testtube, install argparse (a dependency of a dependency
-sometimes fails to install unless you install argparse first, independently):
+Before installing testtube, install argparse (one of testtube's dependencies
+tends to blow up on install if argparse isn't already good to go):
 
     pip install argparse
 
@@ -29,7 +29,9 @@ Then, install testtube like you'd install any other python package:
 
 The simplest way to configure testtube is to drop a tube.py file in whatever
 directory you'll be running `stir` from. The only thing that needs to be
-in the file is a list of regex, callable tuples named `PATTERNS`.
+in that file is a list of tuples named `PATTERNS` consisting of a regular
+expression and a list of tests to run.
+
 Here's an example:
 
     from testtube.helpers import pep8_all, pyflakes_all, nosetests_all
@@ -54,10 +56,11 @@ section below.
     > stir
     testtube is now watching /Path/to/CWD/ for changes...
 
-By default, stir will watch your current working directory and look for a
-settings module named 'tube'. If you dropped a tube.py file into your project
-root, then you shouldn't need to specify any parameters. If you've customized
-things a bit, `stir -h` will light the way:
+By default, stir will watch your current working directory and configure
+itself with a settings module named `tube` (tube.py). If you dropped a tube.py
+file into your project root, then you shouldn't need to specify any parameters
+assuming you execute stir from that directory. If you've customized things a
+bit, `stir -h` will light the way:
 
     usage: stir [-h] [--src_dir SRC_DIR] [--settings SETTINGS]
 
@@ -87,7 +90,7 @@ one argument and add it to your patterns list:
 
 Fortunately, tests can be a bit more clever than that. If you define it like
 the following, testtube will pass it all of the named sub patterns in your
-regex:
+regular expression:
 
     def mysmartertest(changed_file, **kwargs):
         print "%s in %s/ changed." % (changed_file, kwargs['dir'])
