@@ -7,6 +7,7 @@ setup(
     name="testtube",
     version=__version__,
     url='https://github.com/thomasw/testtube',
+    download_url='https://github.com/thomasw/testtube/downloads',
     author=__author__,
     author_email='thomas.welfley+testtube@gmail.com',
     description='Testtube watches a specified directory for file changes '
