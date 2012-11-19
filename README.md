@@ -1,12 +1,23 @@
 # Testtube
 
-Spare your alt and tab keys. Run your project's test suite whenever a file
-changes.
+Spare your alt and tab keys by automatically running your project's test suite
+whenever files change.
+
+Testtube uses [watchdog](https://github.com/gorakhargosh/watchdog/) to monitor
+a given path for file changes. It could fairly be described as a simpler
+(read: easier to use) implementation of watchdog's included "watchmedo"
+utility.
 
 
 ## Installation
 
-Install testtube like you'd install any other python package:
+
+Before installing testtube, install argparse (a dependency of a dependency
+sometimes fails to install unless you install argparse first, independently):
+
+    pip install argparse
+
+Then, install testtube like you'd install any other python package:
 
     pip install testtube
 

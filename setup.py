@@ -14,6 +14,7 @@ setup(
                 ' a change occurs.',
     packages=find_packages(),
     scripts=['testtube/bin/stir'],
+    install_requires=['watchdog==0.6.0'],
     classifiers=[
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Testing',
