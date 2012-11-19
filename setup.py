@@ -14,9 +14,12 @@ setup(
                 ' a change occurs.',
     packages=find_packages(),
     scripts=['testtube/bin/stir'],
+    tests_require=["nose==1.2.1", "pinocchio==0.3.1", "unittest2==0.5.1",
+                   "mock==1.0.1"],
     install_requires=['watchdog==0.6.0'],
     classifiers=[
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Testing',
     ],
+    test_suite='nose.collector',
 )
