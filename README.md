@@ -12,12 +12,7 @@ utility.
 ## Installation
 
 
-Before installing testtube, install argparse (one of testtube's dependencies
-tends to blow up on install if argparse isn't already good to go):
-
-    pip install argparse
-
-Then, install testtube like you'd install any other python package:
+Install testtube like you'd install any other python package:
 
     pip install testtube
 
