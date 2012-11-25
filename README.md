@@ -1,4 +1,4 @@
-# Testtube
+# Testtube [![Build Status](https://travis-ci.org/thomasw/testtube.png)](https://travis-ci.org/thomasw/testtube)
 
 Spare your alt and tab keys by automatically running your project's test suite
 whenever files change.
