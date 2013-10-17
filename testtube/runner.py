@@ -31,4 +31,4 @@ def run_tests(path):
 
         if run_tests:
             _test_path(path, tests, kwargs)
-            print "=========================================================="
+            print('=' * 58)
