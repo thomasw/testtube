@@ -16,9 +16,7 @@ class Inspect_pathTest(unittest2.TestCase):
 
     def test_should_return_named_subpatterns_if_any(self):
         match, kwargs = runner._inspect_path(
-            'kittens/yay.py',
-            r'(?P<dir>.*/).*.py'
-        )
+            'kittens/yay.py', r'(?P<dir>.*/).*.py')
         self.assertEqual(kwargs, {'dir': 'kittens/'})
 
 
