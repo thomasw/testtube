@@ -23,13 +23,10 @@ def _test_path(path, tests, kwargs):
 
 
 def run_tests(path):
-    """Checks the given path agains conf.PATTERNS, and if there are any
-    matches, it runs the correspond test set against the path.
-
-    """
+    """Runs the corresponding tests if path matches against conf.PATTERNS"""
     for pattern, tests in conf.PATTERNS:
         run_tests, kwargs = _inspect_path(path, pattern)
 
         if run_tests:
             _test_path(path, tests, kwargs)
-            print "=========================================================="
+            print('=' * 58)

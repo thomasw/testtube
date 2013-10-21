@@ -5,7 +5,7 @@ from testtube.handlers import PyChangeHandler
 
 
 class PyChangeHandlerTests(unittest2.TestCase):
-    "PyChangeHandler"
+    """PyChangeHandler"""
     def setUp(self):
         self.handler = PyChangeHandler()
 
