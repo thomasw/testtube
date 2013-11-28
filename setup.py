@@ -1,7 +1,23 @@
 from setuptools import setup, find_packages
 
 from testtube import __version__, __author__
+import sys
 
+install_requires = ['watchdog==0.6.0']
+
+tests_require = [
+    'nose==1.2.1',
+    'pep8==1.3.3',
+    'pinocchio==0.3.1',
+    'pyflakes==0.5.0',
+]
+# Add Python 2.6-specific dependencies
+if sys.version_info[:2] < (2, 7):
+    tests_require.append('unittest2==0.5.1')
+
+# Add Python 2.6 and 2.7-specific dependencies
+if sys.version < '3':
+    tests_require.append('mock==1.0.1')
 
 setup(
     name='testtube',
@@ -15,14 +31,8 @@ setup(
                 'a change occurs.',
     packages=find_packages(),
     scripts=['testtube/bin/stir'],
-    tests_require=[
-        'nose==1.2.1',
-        'pinocchio==0.3.1',
-        'unittest2==0.5.1',
-        'mock==1.0.1'],
-    install_requires=[
-        'watchdog==0.6.0',
-    ],
+    tests_require=tests_require,
+    install_requires=install_requires,
     classifiers=[
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Testing',
