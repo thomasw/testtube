@@ -15,7 +15,7 @@ def main():
     observer.schedule(PyChangeHandler(), conf.SRC_DIR, recursive=True)
     observer.start()
 
-    print "testtube is now watching %s for changes...\n" % conf.SRC_DIR
+    print('testtube is now watching %s for changes...\n' % conf.SRC_DIR)
 
     try:
         while True:
