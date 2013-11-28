@@ -1,10 +1,10 @@
 from mock import patch
-import unittest2
+from . import unittest
 
 from testtube import conf, helpers
 
 
-class Required(unittest2.TestCase):
+class Required(unittest.TestCase):
     """helpers._required()"""
     def test_raises_an_exception_if_specified_module_is_not_available(self):
         self.assertRaises(ImportError, helpers._required, 'foo')
@@ -13,7 +13,7 @@ class Required(unittest2.TestCase):
         self.assertIsNone(helpers._required('sys'))
 
 
-class Shortpath(unittest2.TestCase):
+class Shortpath(unittest.TestCase):
     """helpers._short_path()"""
     def setUp(self):
         conf.SRC_DIR = '/foo'
@@ -23,7 +23,7 @@ class Shortpath(unittest2.TestCase):
             helpers._short_path("/foo/foo.py"), 'foo.py')
 
 
-class SubprocessUsingHelperTest(unittest2.TestCase):
+class SubprocessUsingHelperTest(unittest.TestCase):
     """TestCase with testtube.helpers.subprocess.call pre-patched."""
     def setUp(self):
         self.subprocess_patcher = patch("testtube.helpers.subprocess.call")

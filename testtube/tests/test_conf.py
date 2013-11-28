@@ -2,12 +2,12 @@ import imp
 import os
 
 from mock import patch
-import unittest2
+from . import unittest
 
 from testtube import conf
 
 
-class ConfModule(unittest2.TestCase):
+class ConfModule(unittest.TestCase):
     def test_set_src_dir_should_set_the_src_dir(self):
         """_set_src_dir method should set conf.SRC_DIR"""
         conf._set_src_dir('bar/')

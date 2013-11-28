@@ -1,10 +1,11 @@
 from mock import Mock
-import unittest2
+
+from . import unittest
 
 from testtube import runner, conf
 
 
-class Inspect_pathTest(unittest2.TestCase):
+class Inspect_pathTest(unittest.TestCase):
     """testtube.runner._inspect_path()"""
     def test_should_return_false_if_the_path_doesnt_match_the_pattern(self):
         match, kwargs = runner._inspect_path('no/matches/path/', r'kittens')
@@ -20,7 +21,7 @@ class Inspect_pathTest(unittest2.TestCase):
         self.assertEqual(kwargs, {'dir': 'kittens/'})
 
 
-class test_pathTest(unittest2.TestCase):
+class test_pathTest(unittest.TestCase):
     """testtube.runner._test_path()"""
     def setUp(self):
         self.callables = [Mock(), Mock(), Mock()]
@@ -32,7 +33,7 @@ class test_pathTest(unittest2.TestCase):
             callable_mock.asser_called_once_with(path='yay/', foo='bar')
 
 
-class Run_testsTest(unittest2.TestCase):
+class Run_testsTest(unittest.TestCase):
     """testtube.runner.run_tests()"""
     def setUp(self):
         self.mock_test = Mock()

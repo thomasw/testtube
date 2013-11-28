@@ -1,10 +1,10 @@
 from mock import Mock, patch
-import unittest2
+from . import unittest
 
 from testtube.handlers import PyChangeHandler
 
 
-class PyChangeHandlerTests(unittest2.TestCase):
+class PyChangeHandlerTests(unittest.TestCase):
     """PyChangeHandler"""
     def setUp(self):
         self.handler = PyChangeHandler()
