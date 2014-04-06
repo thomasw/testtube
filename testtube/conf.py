@@ -29,6 +29,20 @@ def get_arguments():
     return args.src_dir, args.settings
 
 
+def short_path(path):
+    """Remove conf.SRC_DIR from a given path."""
+    return path.partition("%s%s" % (SRC_DIR, '/'))[2]
+
+
+def configure(src_dir, settings):
+    """Configure the app to use the specified SRC_DIR and extract the
+    relevant settings from the specified settings module.
+
+    """
+    _set_src_dir(src_dir)
+    _get_test_suite_from_settings(settings)
+
+
 def _set_src_dir(src_dir):
     """Generate an absolute path by merging the cwd with the passed src dir"""
     global SRC_DIR
@@ -44,12 +58,3 @@ def _get_test_suite_from_settings(settings_module):
     settings = __import__(settings_module)
 
     PATTERNS = settings.PATTERNS
-
-
-def configure(src_dir, settings):
-    """Configure the app to use the specified SRC_DIR and extract the
-    relevant settings from the specified settings module.
-
-    """
-    _set_src_dir(src_dir)
-    _get_test_suite_from_settings(settings)

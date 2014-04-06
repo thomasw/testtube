@@ -1,30 +1,34 @@
-import imp
 import os
-
-from mock import patch
-from . import unittest
+import sys
 
 from testtube import conf
 
+from . import test_settings, unittest
 
-class ConfModule(unittest.TestCase):
-    def test_set_src_dir_should_set_the_src_dir(self):
-        """_set_src_dir method should set conf.SRC_DIR"""
-        conf._set_src_dir('bar/')
-        self.assertEqual(
-            conf.SRC_DIR, os.path.join(os.getcwd(), 'bar'))
 
-    @patch('__builtin__.__import__')
-    def test_get_test_suite_from_settings_should_grab_settings(self, settings):
-        """_get_test_suite_from_settings should grab the appropriate settings
-        from the passed settings module"""
-        # Create a fake settings module and make it the return value for
-        # our __import__ mock
-        fake_settings = imp.new_module('mysettings')
-        fake_settings.PATTERNS = 'bar'
-        settings.return_value = fake_settings
+class ConfTestCase(unittest.TestCase):
+    def setUp(self):
+        # Add the tests dir to sys.path so test_settings is importable by
+        # testtube's conf module
+        sys.path.append(os.path.dirname(__file__))
 
-        conf._get_test_suite_from_settings('mysettings')
+        self.settings = test_settings
+        self.conf = conf
+        self.conf.configure('foo/', 'test_settings')
 
-        self.assertEqual(conf.PATTERNS, 'bar')
-        settings.assert_called_once_with('mysettings')
+
+class ConfModuleConfigureMethod(ConfTestCase):
+    def test_should_set_the_SRC_DIR(self):
+        """should set the SRC_DIR"""
+        self.assertEqual(self.conf.SRC_DIR, os.path.join(os.getcwd(), 'foo'))
+
+    def test_should_set_PATTERNS_to_setting_modules_PATTERNS_property(self):
+        self.assertEqual(self.conf.PATTERNS, self.settings.PATTERNS)
+
+
+class Shortpath(ConfTestCase):
+    """conf.short_path()"""
+    def test_removes_SRC_DIR_from_the_passed_path(self):
+        """removes SRC_DIR from the passed path"""
+        sample_file = os.path.join(os.getcwd(), 'foo/sample.py')
+        self.assertEqual(conf.short_path(sample_file), 'sample.py')
