@@ -2,7 +2,6 @@ from setuptools import setup, find_packages
 
 from testtube import __version__, __author__
 
-install_requires = ['watchdog==0.6.0']
 
 setup(
     name='testtube',
@@ -16,7 +15,7 @@ setup(
                 'a change occurs.',
     packages=find_packages(),
     scripts=['testtube/bin/stir'],
-    install_requires=install_requires,
+    install_requires=['watchdog==0.7.1'],
     classifiers=[
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Testing',
