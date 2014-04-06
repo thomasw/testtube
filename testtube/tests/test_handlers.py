@@ -1,5 +1,4 @@
-from mock import Mock, patch
-from . import unittest
+from . import Mock, patch, unittest
 
 from testtube.handlers import PyChangeHandler
 

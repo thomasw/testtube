@@ -1,6 +1,4 @@
-from mock import Mock
-
-from . import unittest
+from . import Mock, unittest
 
 from testtube import runner, conf
 
