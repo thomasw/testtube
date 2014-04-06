@@ -1,26 +1,6 @@
-from mock import patch
-from . import unittest
+from . import patch, unittest
 
 from testtube import conf, helpers
-
-
-class Required(unittest.TestCase):
-    """helpers._required()"""
-    def test_raises_an_exception_if_specified_module_is_not_available(self):
-        self.assertRaises(ImportError, helpers._required, 'foo')
-
-    def test_does_nothing_if_the_specified_module_is_available(self):
-        self.assertIsNone(helpers._required('sys'))
-
-
-class Shortpath(unittest.TestCase):
-    """helpers._short_path()"""
-    def setUp(self):
-        conf.SRC_DIR = '/foo'
-
-    def test_removes_SRC_DIR_from_the_passed_path(self):
-        self.assertEqual(
-            helpers._short_path("/foo/foo.py"), 'foo.py')
 
 
 class SubprocessUsingHelperTest(unittest.TestCase):
@@ -54,6 +34,20 @@ class Pyflakes_allHelperTest(SubprocessUsingHelperTest):
         conf.SRC_DIR = 'yay/'
         helpers.pyflakes_all('')
         self.subprocess_patcher.assert_called_once_with(['pyflakes', 'yay/'])
+
+
+class FrostedHelperTest(SubprocessUsingHelperTest):
+    def test_should_call_frosted_and_pass_it_the_specified_file(self):
+        helpers.frosted('a.py')
+        self.subprocess_patcher.assert_called_once_with(['frosted', 'a.py'])
+
+
+class Frosted_allHelperTest(SubprocessUsingHelperTest):
+    def test_should_call_frosted_and_pass_it_the_project_dir(self):
+        conf.SRC_DIR = 'yay/'
+        helpers.frosted_all('')
+        self.subprocess_patcher.assert_called_once_with(
+            ['frosted', '-r', 'yay/'])
 
 
 class Nosetests_allHelperTest(SubprocessUsingHelperTest):
