@@ -8,4 +8,6 @@ install:
     - if [[ $TRAVIS_PYTHON_VERSION == '3.3' ]]; then pip install -r py3_requirements.txt; fi
     - if [[ $TRAVIS_PYTHON_VERSION != '3.3' ]]; then pip install -r requirements.txt; fi
 script:
-    - nosetests
+    - nosetests --with-coverage --cover-package=testtube
+after_success:
+    coveralls

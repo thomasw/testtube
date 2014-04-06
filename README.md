@@ -1,4 +1,9 @@
-# Testtube [![Build Status](https://travis-ci.org/thomasw/testtube.png)](https://travis-ci.org/thomasw/testtube)
+# Testtube
+
+[![Build Status](https://travis-ci.org/thomasw/testtube.png)](https://travis-ci.org/thomasw/testtube)
+[![Coverage Status](https://coveralls.io/repos/thomasw/testtube/badge.png)](https://coveralls.io/r/thomasw/testtube)
+[![Latest Version](https://pypip.in/v/testtube/badge.png)](https://pypi.python.org/pypi/testtube/)
+[![Downloads](https://pypip.in/d/testtube/badge.png)](https://pypi.python.org/pypi/testtube/)
 
 Spare your alt and tab keys by automatically running your project's test suite
 whenever files change.
@@ -65,7 +70,7 @@ bit, `stir -h` will light the way:
       -h, --help           show this help message and exit
       --src_dir SRC_DIR    The directory to watch for changes. (Defaults to
                            CWD)
-      --settings SETTINGS  The testtube settings module that defines which 
+      --settings SETTINGS  The testtube settings module that defines which
                            tests to run. (Defaults to "tube" - the settings
                            module must be importable from your current working
                            directory)
@@ -78,7 +83,7 @@ one argument and add it to your patterns list:
 
     def mytest(changed_file):
         print "Oh snap, %s just changed" % changed_file
-    
+
     PATTERNS = (
         (r'.*', [mytest]),
     )
@@ -89,11 +94,11 @@ regular expression:
 
     def mysmartertest(changed_file, **kwargs):
         print "%s in %s/ changed." % (changed_file, kwargs['dir'])
-    
+
     PATTERNS = (
         (r'.*/(?P<dir>[^/]*)/.*\.py', [mysmartertest]),
     )
-    
+
 
 
 ## Everything else
