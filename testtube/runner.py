@@ -1,6 +1,6 @@
 import re
 
-from testtube import conf
+from testtube.conf import Settings
 
 
 def _inspect_path(path, pattern):
@@ -23,8 +23,8 @@ def _test_path(path, tests, kwargs):
 
 
 def run_tests(path):
-    """Runs the corresponding tests if path matches against conf.PATTERNS"""
-    for pattern, tests in conf.PATTERNS:
+    """Runs the corresponding tests if path matches in Settings.PATTERNS"""
+    for pattern, tests in Settings.PATTERNS:
         run_tests, kwargs = _inspect_path(path, pattern)
 
         if run_tests:

@@ -1,3 +1,6 @@
+from imp import find_module
+
+
 class RequireModule(object):
     """Decorator that raises import error if specified module isn't found."""
 
@@ -6,7 +9,7 @@ class RequireModule(object):
 
     def _require_module(self):
         try:
-            __import__(self.module_name)
+            find_module(self.module_name)
         except ImportError:
             raise ImportError(
                 '%s must be installed to use this helper.' % self.module_name)

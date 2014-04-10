@@ -1,6 +1,7 @@
 from . import patch, unittest
 
-from testtube import conf, helpers
+from testtube.conf import Settings
+from testtube import helpers
 
 
 class SubprocessUsingHelperTest(unittest.TestCase):
@@ -18,7 +19,7 @@ class Pep8HelperTest(SubprocessUsingHelperTest):
 
 class Pep8_allHelperTest(SubprocessUsingHelperTest):
     def test_should_call_pep8_against_the_entire_project(self):
-        conf.SRC_DIR = 'yay/'
+        Settings.SRC_DIR = 'yay/'
         helpers.pep8_all('a.py')
         self.subprocess_patcher.assert_called_once_with(['pep8', 'yay/'])
 
@@ -31,7 +32,7 @@ class PyflakesHelperTest(SubprocessUsingHelperTest):
 
 class Pyflakes_allHelperTest(SubprocessUsingHelperTest):
     def test_should_call_pyflakes_and_pass_it_the_project_dir(self):
-        conf.SRC_DIR = 'yay/'
+        Settings.SRC_DIR = 'yay/'
         helpers.pyflakes_all('')
         self.subprocess_patcher.assert_called_once_with(['pyflakes', 'yay/'])
 
@@ -44,7 +45,7 @@ class FrostedHelperTest(SubprocessUsingHelperTest):
 
 class Frosted_allHelperTest(SubprocessUsingHelperTest):
     def test_should_call_frosted_and_pass_it_the_project_dir(self):
-        conf.SRC_DIR = 'yay/'
+        Settings.SRC_DIR = 'yay/'
         helpers.frosted_all('')
         self.subprocess_patcher.assert_called_once_with(
             ['frosted', '-r', 'yay/'])

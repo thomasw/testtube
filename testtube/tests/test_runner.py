@@ -1,6 +1,7 @@
 from . import Mock, unittest
 
-from testtube import runner, conf
+from testtube.conf import Settings
+from testtube import runner
 
 
 class Inspect_pathTest(unittest.TestCase):
@@ -35,7 +36,7 @@ class Run_testsTest(unittest.TestCase):
     """testtube.runner.run_tests()"""
     def setUp(self):
         self.mock_test = Mock()
-        conf.PATTERNS = ((r'.*', [self.mock_test]),)
+        Settings.PATTERNS = ((r'.*', [self.mock_test]),)
 
     def test_should_call_tests_specified_in_conf_on_pattern_match(self):
         runner.run_tests('yay/')
