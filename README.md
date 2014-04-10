@@ -13,17 +13,15 @@ a given path for file changes. It could fairly be described as a simpler
 (read: easier to use) implementation of watchdog's included "watchmedo"
 utility.
 
-
 ## Installation
-
 
 Install testtube like you'd install any other python package:
 
-    pip install testtube
-
+```
+pip install testtube
+```
 
 ## Usage
-
 
 ### Configure testtube
 
@@ -34,11 +32,13 @@ expression and a list of tests to run.
 
 Here's an example:
 
-    from testtube.helpers import pep8_all, pyflakes_all, nosetests_all
+```python
+from testtube.helpers import pep8_all, pyflakes_all, nosetests_all
 
-    PATTERNS = (
-        (r'.*\.py', [pep8_all, pyflakes_all, nosetests_all]),
-    )
+PATTERNS = (
+    (r'.*\.py', [pep8_all, pyflakes_all, nosetests_all]),
+)
+```
 
 Given the configuration above, testtube will match the full path to the
 changed file against `r'.*\.py'`. If it matches, it will then run the
@@ -49,7 +49,6 @@ Testtube comes with a number of helpers, which you can find in
 They are designed to save you from writing your own tests as much
 as possible. If they don't meet your needs, see the "Writing your own tests"
 section below.
-
 
 ### Stir it
 
@@ -62,44 +61,48 @@ file into your project root, then you shouldn't need to specify any parameters
 assuming you execute stir from that directory. If you've customized things a
 bit, `stir -h` will light the way:
 
-    usage: stir [-h] [--src_dir SRC_DIR] [--settings SETTINGS]
+```
+$ stir -h
+usage: stir [-h] [--src_dir SRC_DIR] [--settings SETTINGS]
 
-    Watch a directory and run a custom set of tests whenever a file changes.
+Watch a directory and run a custom set of tests whenever a file changes.
 
-    optional arguments:
-      -h, --help           show this help message and exit
-      --src_dir SRC_DIR    The directory to watch for changes. (Defaults to
-                           CWD)
-      --settings SETTINGS  The testtube settings module that defines which
-                           tests to run. (Defaults to "tube" - the settings
-                           module must be importable from your current working
-                           directory)
-
+optional arguments:
+  -h, --help           show this help message and exit
+  --src_dir SRC_DIR    The directory to watch for changes. (Defaults to CWD)
+  --settings SETTINGS  Path to a testtube settings file that defines which
+                       tests to run (Defaults to "tube.py" - your settings file
+                       must be importable and the path must be relative to
+                       your CWD)
+```
 
 ### Writing your own tests
+
 If the included helpers don't do what you need, you can write your own tests
 right in your settings module. Simply define a callable that accepts at least
 one argument and add it to your patterns list:
 
-    def mytest(changed_file):
-        print "Oh snap, %s just changed" % changed_file
+```python
+def mytest(changed_file):
+    print "Oh snap, %s just changed" % changed_file
 
-    PATTERNS = (
-        (r'.*', [mytest]),
-    )
+PATTERNS = (
+    (r'.*', [mytest]),
+)
+```
 
 Fortunately, tests can be a bit more clever than that. If you define it like
 the following, testtube will pass it all of the named sub patterns in your
 regular expression:
 
-    def mysmartertest(changed_file, **kwargs):
-        print "%s in %s/ changed." % (changed_file, kwargs['dir'])
+```python
+def mysmartertest(changed_file, **kwargs):
+    print "%s in %s/ changed." % (changed_file, kwargs['dir'])
 
-    PATTERNS = (
-        (r'.*/(?P<dir>[^/]*)/.*\.py', [mysmartertest]),
-    )
-
-
+PATTERNS = (
+    (r'.*/(?P<dir>[^/]*)/.*\.py$', [mysmartertest]),
+)
+```
 
 ## Everything else
 
