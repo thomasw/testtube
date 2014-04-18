@@ -9,6 +9,7 @@ class SubprocessUsingHelperTest(unittest.TestCase):
     def setUp(self):
         self.subprocess_patcher = patch("testtube.helpers.subprocess.call")
         self.subprocess_patcher = self.subprocess_patcher.start()
+        self.subprocess_patcher.return_value = 0
 
 
 class Pep8HelperTest(SubprocessUsingHelperTest):

@@ -1,59 +1,104 @@
 import subprocess
+import sys
 
 from testtube.conf import Settings
-from testtube.decorators import RequireModule
 
 
-@RequireModule('pep8')
-def pep8(changed, **kwargs):
-    """Runs the pep8 checker against the changed file."""
-    print 'Checking PEP 8 compliance of %s...\n' % Settings.short_path(changed)
-    subprocess.call(['pep8', changed])
-    print('\nDone.\n')
+class HardTestFailure(Exception):
+    pass
 
 
-@RequireModule('pep8')
-def pep8_all(changed, **kwargs):
-    """Runs the pep8 checker against the entire project."""
-    print 'Checking PEP 8 compliance of source directory...\n'
-    subprocess.call(['pep8', Settings.SRC_DIR])
-    print('\nDone.\n')
+class Helper(object):
+    command = ''
+    all_files = False
+
+    def setup(self, changed, *args, **kwargs):
+        test_name = self.__class__.__name__
+
+        if self.all_files:
+            print "Executing %s against source directory.\n" % test_name
+        else:
+            print 'Executing %s against %s...\n' % (test_name, changed)
+
+    def test(self, changed, *args, **kwargs):
+        return self.execute_system_command(changed, *args, **kwargs)
+
+    def tear_down(self, changed, result, *args, **kwargs):
+        print 'Done.\n'
+
+    def success(self, changed, result, *args, **kwargs):
+        pass
+
+    def failure(self, changed, result, *args, **kwargs):
+        sys.stdout.write('\a' * 3)
+
+        raise HardTestFailure("Fail fast is enabled, aborting test run.")
+
+    def execute_system_command(self, changed, *args, **kwargs):
+        if not self.command:
+            return True
+
+        return subprocess.call([self.command] + self.get_args(changed)) == 0
+
+    def get_args(self, changed, *args, **kwargs):
+        if self.all_files:
+            return [Settings.SRC_DIR]
+
+        return [changed]
+
+    def __call__(self, changed, *args, **kwargs):
+        self.setup(changed, *args, **kwargs)
+
+        result = self.test(changed, *args, **kwargs)
+
+        if result:
+            self.success(changed, result, *args, **kwargs)
+
+        if not result:
+            self.failure(changed, result, *args, **kwargs)
+
+        self.tear_down(changed, result, *args, **kwargs)
 
 
-@RequireModule('pyflakes')
-def pyflakes(changed, **kwargs):
-    """Runs pyflakes against the changed file"""
-    print 'Inspecting %s with pyflakes...\n' % Settings.short_path(changed)
-    subprocess.call(['pyflakes', changed])
-    print '\nDone.\n'
+class Pep8(Helper):
+    command = 'pep8'
 
 
-@RequireModule('pyflakes')
-def pyflakes_all(changed, **kwargs):
-    """Runs pyflakes against the entire project"""
-    print 'Inspecting source directory with pyflakes...\n'
-    subprocess.call(['pyflakes', Settings.SRC_DIR])
-    print '\nDone.\n'
+class Pep8All(Pep8):
+    all_files = True
 
 
-@RequireModule('frosted')
-def frosted(changed, **kwargs):
-    """Runs frosted against the changed file"""
-    print 'Inspecting %s with frosted...\n' % Settings.short_path(changed)
-    subprocess.call(['frosted', changed])
-    print '\nDone.\n'
+class Pyflakes(Helper):
+    command = 'pyflakes'
 
 
-@RequireModule('frosted')
-def frosted_all(changed, **kwargs):
-    """Runs frosted against the entire project"""
-    print 'Inspecting source directory with frosted...\n'
-    subprocess.call(['frosted', '-r', Settings.SRC_DIR])
-    print '\nDone.\n'
+class PyflakesAll(Pyflakes):
+    all_files = True
 
 
-@RequireModule('nose')
-def nosetests_all(changed, **kwargs):
-    """Run nosetests against the entire project if any file changes."""
-    print 'Running nosetests...'
-    subprocess.call(['nosetests'])
+class Frosted(Helper):
+    command = 'frosted'
+
+
+class FrostedAll(Frosted):
+    all_files = True
+
+    def get_args(self, *args, **kwargs):
+        return ['-r', Settings.SRC_DIR]
+
+
+class NoseTestsAll(Helper):
+    command = 'nosetests'
+    all_files = True
+
+    def get_args(self, *args, **kwargs):
+        return []
+
+
+pep8 = Pep8()
+pep8_all = Pep8All()
+pyflakes = Pyflakes()
+pyflakes_all = PyflakesAll()
+frosted = Frosted()
+frosted_all = FrostedAll()
+nosetests_all = NoseTestsAll()

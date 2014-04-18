@@ -1,6 +1,7 @@
 import re
 
 from testtube.conf import Settings
+from testtube.helpers import HardTestFailure
 
 
 def inspect_path(path, pattern):
@@ -18,7 +19,13 @@ def inspect_path(path, pattern):
 def test_path(path, tests, kwargs):
     """Runs a set of tests against a specified path passing kwargs to each."""
     for test in tests:
-        test(path, **kwargs)
+        try:
+            test(path, **kwargs)
+        except HardTestFailure:
+            print
+            print "Test failed and fail fast is enabled. Aborting test run."
+            print
+            break
 
 
 def run_tests(path):
