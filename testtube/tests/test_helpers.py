@@ -26,37 +26,38 @@ class Shortpath(unittest2.TestCase):
 class SubprocessUsingHelperTest(unittest2.TestCase):
     """TestCase with testtube.helpers.subprocess.call pre-patched."""
     def setUp(self):
-        self.subprocess_patcher = patch("testtube.helpers.subprocess.call")
-        self.subprocess_patcher = self.subprocess_patcher.start()
+        subprocess_patcher = patch("testtube.helpers.subprocess.call")
+        self.subprocess_mock = subprocess_patcher.start()
+        self.addCleanup(subprocess_patcher.stop)
 
 
 class Pep8HelperTest(SubprocessUsingHelperTest):
     def test_should_call_pep8_and_pass_it_the_specified_file(self):
         helpers.pep8('a.py')
-        self.subprocess_patcher.assert_called_once_with(['pep8', 'a.py'])
+        self.subprocess_mock.assert_called_once_with(['pep8', 'a.py'])
 
 
 class Pep8_allHelperTest(SubprocessUsingHelperTest):
     def test_should_call_pep8_against_the_entire_project(self):
         conf.SRC_DIR = 'yay/'
         helpers.pep8_all('a.py')
-        self.subprocess_patcher.assert_called_once_with(['pep8', 'yay/'])
+        self.subprocess_mock.assert_called_once_with(['pep8', 'yay/'])
 
 
 class PyflakesHelperTest(SubprocessUsingHelperTest):
     def test_should_call_pyflakes_and_pass_it_the_specified_file(self):
         helpers.pyflakes('a.py')
-        self.subprocess_patcher.assert_called_once_with(['pyflakes', 'a.py'])
+        self.subprocess_mock.assert_called_once_with(['pyflakes', 'a.py'])
 
 
 class Pyflakes_allHelperTest(SubprocessUsingHelperTest):
     def test_should_call_pyflakes_and_pass_it_the_project_dir(self):
         conf.SRC_DIR = 'yay/'
         helpers.pyflakes_all('')
-        self.subprocess_patcher.assert_called_once_with(['pyflakes', 'yay/'])
+        self.subprocess_mock.assert_called_once_with(['pyflakes', 'yay/'])
 
 
 class Nosetests_allHelperTest(SubprocessUsingHelperTest):
     def test_should_call_nosetests(self):
         helpers.nosetests_all('')
-        self.subprocess_patcher.assert_called_once_with(['nosetests'])
+        self.subprocess_mock.assert_called_once_with(['nosetests'])
