@@ -1,4 +1,6 @@
-from . import Mock, unittest
+import re
+
+from . import ANY, Mock, unittest
 
 from testtube.conf import Settings
 from testtube import runner
@@ -7,17 +9,18 @@ from testtube import runner
 class Inspect_pathTest(unittest.TestCase):
     """testtube.runner.inspect_path()"""
     def test_should_return_false_if_the_path_doesnt_match_the_pattern(self):
-        match, kwargs = runner.inspect_path('no/matches/path/', r'kittens')
-        self.assertFalse(match)
+        matches, regex_match = runner.inspect_path(
+            'no/matches/path/', r'kittens')
+        self.assertFalse(matches)
 
     def test_should_return_true_if_path_matches_the_pattern(self):
-        match, kwargs = runner.inspect_path('kittens/', r'^kittens',)
-        self.assertTrue(match)
+        matches, regex_match = runner.inspect_path('kittens/', r'^kittens')
+        self.assertTrue(matches)
 
-    def test_should_return_named_subpatterns_if_any(self):
-        match, kwargs = runner.inspect_path(
+    def test_should_return_regex_match_object(self):
+        matches, regex_match = runner.inspect_path(
             'kittens/yay.py', r'(?P<dir>.*/).*.py')
-        self.assertEqual(kwargs, {'dir': 'kittens/'})
+        self.assertIsInstance(regex_match, type(re.match("", "")))
 
 
 class test_pathTest(unittest.TestCase):
@@ -40,4 +43,4 @@ class Run_testsTest(unittest.TestCase):
 
     def test_should_call_tests_specified_in_conf_on_pattern_match(self):
         runner.run_tests('yay/')
-        self.mock_test.assert_called_once_with('yay/')
+        self.mock_test.assert_called_once_with('yay/', ANY)

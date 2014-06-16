@@ -1,6 +1,8 @@
 import subprocess
 import sys
 
+from termcolor import colored
+
 from testtube.conf import Settings
 
 
@@ -10,95 +12,107 @@ class HardTestFailure(Exception):
 
 class Helper(object):
     command = ''
-    all_files = False
 
-    def setup(self, changed, *args, **kwargs):
-        test_name = self.__class__.__name__
+    def __init__(self, **kwargs):
+        self.all_files = False
+        self.fail_fast = False
+        self.bells = 3
+        self.name = self.__class__.__name__
 
+        # Override default settings with passed in values.
+        for setting, value in kwargs.iteritems():
+            setattr(self, setting, value)
+
+        # These properites are provided by __call__ and are not configurable.
+        self.changed = ''
+        self.match = ''
+
+    def setup(self):
         if self.all_files:
-            print "Executing %s against source directory.\n" % test_name
-        else:
-            print 'Executing %s against %s...\n' % (test_name, changed)
+            print 'Executing %s against all matching files.\n' % self.name
 
-    def test(self, changed, *args, **kwargs):
-        return self.execute_system_command(changed, *args, **kwargs)
+        if not self.all_files:
+            print 'Executing %s against %s...\n' % (self.name, self.changed)
 
-    def tear_down(self, changed, result, *args, **kwargs):
-        print 'Done.\n'
+    def tear_down(self, result):
+        print
 
-    def success(self, changed, result, *args, **kwargs):
-        pass
+    def success(self, result):
+        print colored('Test passed.', 'green')
 
-    def failure(self, changed, result, *args, **kwargs):
-        sys.stdout.write('\a' * 3)
+    def failure(self, result):
+        sys.stdout.write('\a' * self.bells)
+        print colored('Test failed.', 'red')
 
-        raise HardTestFailure("Fail fast is enabled, aborting test run.")
+        if self.fail_fast:
+            raise HardTestFailure('Fail fast is enabled, aborting test run.')
 
-    def execute_system_command(self, changed, *args, **kwargs):
+    def test(self):
         if not self.command:
             return True
 
-        return subprocess.call([self.command] + self.get_args(changed)) == 0
+        return subprocess.call([self.command] + self.get_args()) == 0
 
-    def get_args(self, changed, *args, **kwargs):
+    def get_args(self):
         if self.all_files:
             return [Settings.SRC_DIR]
 
-        return [changed]
+        return [self.changed]
 
-    def __call__(self, changed, *args, **kwargs):
-        self.setup(changed, *args, **kwargs)
+    def __call__(self, changed, match):
+        self.changed = changed
+        self.match = match
 
-        result = self.test(changed, *args, **kwargs)
+        self.setup()
+
+        result = self.test()
 
         if result:
-            self.success(changed, result, *args, **kwargs)
+            self.success(result)
 
         if not result:
-            self.failure(changed, result, *args, **kwargs)
+            self.failure(result)
 
-        self.tear_down(changed, result, *args, **kwargs)
+        self.tear_down(result)
+
+        return result
 
 
 class Pep8(Helper):
     command = 'pep8'
 
 
-class Pep8All(Pep8):
-    all_files = True
-
-
 class Pyflakes(Helper):
     command = 'pyflakes'
-
-
-class PyflakesAll(Pyflakes):
-    all_files = True
 
 
 class Frosted(Helper):
     command = 'frosted'
 
+    def get_args(self):
+        if self.all_files:
+            return ['-r', Settings.SRC_DIR]
 
-class FrostedAll(Frosted):
-    all_files = True
-
-    def get_args(self, *args, **kwargs):
-        return ['-r', Settings.SRC_DIR]
+        return [self.changed]
 
 
-class NoseTestsAll(Helper):
+class Nosetests(Helper):
     command = 'nosetests'
-    all_files = True
+
+    def __init__(self, **kwargs):
+        super(Nosetests, self).__init__()
+
+        # Nosetests only works on all files, so override any config for this
+        # value.
+        self.all_files = True
 
     def get_args(self, *args, **kwargs):
         return []
 
 
-pep8 = Pep8()
-pep8_all = Pep8All()
-pyflakes = Pyflakes()
-pyflakes_all = PyflakesAll()
-frosted = Frosted()
-frosted_all = FrostedAll()
-nosetests_all = NoseTestsAll()
+class Flake8(Helper):
+    command = 'flake8'
+
+
+class Pep257(Helper):
+    command = 'pep257'
