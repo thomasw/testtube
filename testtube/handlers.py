@@ -1,6 +1,6 @@
 from watchdog.events import FileSystemEventHandler
 
-from testtube.runner import run_tests
+from testtube.runner import SuiteRunner
 
 
 class PyChangeHandler(FileSystemEventHandler):
@@ -9,4 +9,5 @@ class PyChangeHandler(FileSystemEventHandler):
 
     def on_any_event(self, event):
         """Execute the test suite whenever files change."""
-        run_tests(event.src_path)
+        test_runner = SuiteRunner()
+        test_runner.run(event.src_path)
