@@ -1,9 +1,7 @@
 import subprocess
-import sys
-
-from termcolor import colored
 
 from testtube.conf import Settings
+from testtube.renderer import Renderer
 
 
 class HardTestFailure(Exception):
@@ -12,6 +10,7 @@ class HardTestFailure(Exception):
 
 class Helper(object):
     command = ''
+    renderer = Renderer()
 
     def __init__(self, **kwargs):
         self.all_files = False
@@ -28,21 +27,19 @@ class Helper(object):
         self.match = ''
 
     def setup(self):
-        if self.all_files:
-            print 'Executing %s against all matching files.\n' % self.name
-
-        if not self.all_files:
-            print 'Executing %s against %s...\n' % (self.name, self.changed)
+        changed = "all matching files" if not self.all_files else self.changed
+        self.renderer.notice(
+            'Executing %s against %s.\n' % (self.name, changed))
 
     def tear_down(self, result):
-        print
+        self.renderer.notice()
 
     def success(self, result):
-        print colored('Test passed.', 'green')
+        self.renderer.success('Test passed.')
 
     def failure(self, result):
-        sys.stdout.write('\a' * self.bells)
-        print colored('Test failed.', 'red')
+        self.renderer.audible_alert(self.bells)
+        self.renderer.failure('Test failed.')
 
         if self.fail_fast:
             raise HardTestFailure('Fail fast is enabled, aborting test run.')
@@ -116,3 +113,10 @@ class Flake8(Helper):
 
 class Pep257(Helper):
     command = 'pep257'
+
+
+class PythonSetupPyTest(Helper):
+    command = 'python'
+
+    def get_args(self):
+        return ['setup.py', 'test']

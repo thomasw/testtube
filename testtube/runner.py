@@ -1,10 +1,9 @@
 """Utilities for executing testtube suites against changed files."""
 import re
 
-from termcolor import colored
-
 from testtube.conf import Settings
 from testtube.helpers import HardTestFailure
+from testtube.renderer import Renderer
 
 
 class ResultCollection(list):
@@ -25,8 +24,6 @@ class ResultCollection(list):
 class TestCollection(object):
 
     """Pattern, test list, and config grouping."""
-
-    fail_fast_msg = colored('Fail fast is enabled. Aborting tests.', 'red')
 
     def __init__(self, pattern, tests, conf=None):
         """Build a test collection given a regex, a test list and configuration.
@@ -92,55 +89,31 @@ class TestCollection(object):
 
 
 class SuiteRunner(object):
-    fail_fast_msg = colored(
-        'Aborting subsequent test groups. Fail fast enabled.', 'red')
-    test_divider = '=' * 71
+
+    """Execute matching test groups against a given path."""
+
+    renderer = Renderer()
 
     def run(self, path):
+        """Execute matching test groups against a given path."""
         results = []
 
         for test_group in Settings.PATTERNS:
             tests = TestCollection(*test_group)
             result = tests.apply(path)
 
-            if result:
-                results.append(result)
-
-            if result and not result.passed and tests.fail_fast:
-                self._render_fail_fast_error()
-                self._render_divider()
-                break
-
-            if result:
-                self._render_divider()
-
-        if results:
-            self._render_test_report(results)
-
-    def _render_divider(self):
-        print self.test_divider
-
-    def _render_fail_fast_error(self):
-        print self.fail_fast_msg
-
-    def _render_test_report(self, results):
-        if not results:
-            return
-
-        print "Test Report\n"
-
-        for count, suite_group in enumerate(results, 1):
-            if not suite_group:
+            if not result:
                 continue
 
-            test_group_results = "Test group %s:\t" % count
+            results.append(result)
 
-            for test, result in suite_group:
-                color = 'green' if result else 'red'
-                files = test.changed if not test.all_files else 'all matches'
-                test_group_results += colored(
-                    '%s (%s)\t' % (test.name, files), color)
+            if not result.passed and tests.fail_fast:
+                self.renderer.failure(
+                    'Aborting subsequent test groups. Fail fast enabled.')
+                self.renderer.divider()
+                break
 
-            print test_group_results
+            self.renderer.divider()
 
-        self._render_divider()
+        if results:
+            self.renderer.report(results)
