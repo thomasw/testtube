@@ -5,6 +5,8 @@ from termcolor import colored
 
 from testtube.conf import Settings
 
+# For python3 support, we must use print as a function rather than a statement
+
 
 class Renderer(object):
 
@@ -12,19 +14,19 @@ class Renderer(object):
 
     def failure(self, message=''):
         """Print the passed message in red."""
-        print colored(message, 'red')
+        print(colored(message, 'red'))
 
     def notice(self, message=''):
         """Print the passed message."""
-        print message
+        print(message)
 
     def success(self, message=''):
         """Print the passed message in green."""
-        print colored(message, 'green')
+        print(colored(message, 'green'))
 
     def divider(self):
         """Print a divider."""
-        print '=' * 71
+        print('=' * 71)
 
     def report(self, results):
         """Print a test report."""
