@@ -1,6 +1,6 @@
 import os
 
-from testtube.conf import Settings
+from testtube.conf import Settings, get_arguments
 
 from . import test_settings, unittest
 
@@ -28,3 +28,16 @@ class SettingsModuleShortpathMethod(ConfTestCase):
         """removes Settings.SRC_DIR from the passed path"""
         sample_file = os.path.join(os.getcwd(), 'foo/sample.py')
         self.assertEqual(self.settings.short_path(sample_file), 'sample.py')
+
+
+class GetArguments(unittest.TestCase):
+    """get_arguments()"""
+    def setUp(self):
+        self.args = get_arguments()
+        self.default_path, self.default_settings_module = self.args
+
+    def test_returns_thew_cwd_as_the_default_path(self):
+        self.assertEqual(self.default_path, os.getcwd())
+
+    def test_returns_tube_dot_py_as_the_default_settings_module_name(self):
+        self.assertEqual(self.default_settings_module, 'tube.py')
