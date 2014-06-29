@@ -18,12 +18,12 @@ class SettingsModuleConfigureMethod(ConfTestCase):
         self.assertEqual(
             self.settings.SRC_DIR, os.path.join(os.getcwd(), 'foo'))
 
-    def test_should_set_PATTERNS_to_setting_modules_PATTERNS_property(self):
+    def test_should_import_uppercased_settings_from_settings_module(self):
         self.assertEqual(self.settings.PATTERNS, self.settings.PATTERNS)
 
 
-class Shortpath(ConfTestCase):
-    """Settings' short_path() method"""
+class SettingsModuleShortpathMethod(ConfTestCase):
+    """Settings.short_path()"""
     def test_removes_SRC_DIR_from_the_passed_path(self):
         """removes Settings.SRC_DIR from the passed path"""
         sample_file = os.path.join(os.getcwd(), 'foo/sample.py')

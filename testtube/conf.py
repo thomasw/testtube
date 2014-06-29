@@ -5,6 +5,7 @@ import os
 
 
 class Settings(object):
+    """Testtube settings module."""
     # testube default settings
     CWD_SRC_DIR = ''
     SRC_DIR = os.getcwd()
@@ -12,7 +13,7 @@ class Settings(object):
 
     @classmethod
     def configure(cls, src_dir, settings):
-        """Configures testtube to use a src directory and settings module."""
+        """Configure testtube to use a src directory and settings module."""
         cls.CWD_SRC_DIR = src_dir
         cls.SRC_DIR = os.path.realpath(
             os.path.join(os.getcwd(), cls.CWD_SRC_DIR))
@@ -20,20 +21,22 @@ class Settings(object):
 
     @classmethod
     def get_settings(cls, settings_module):
-        """Set conf attributes equal to all uppercase attributes of settings"""
+        """Set class attributes equal to uppercased attributes of a module."""
+        print settings_module, os.path.join(os.getcwd(), settings_module)
         settings = imp.load_source(
             'settings', os.path.join(os.getcwd(), settings_module))
 
-        cls.PATTERNS = settings.PATTERNS
+        for setting in (x for x in dir(settings) if x.isupper()):
+            setattr(cls, setting, getattr(settings, setting))
 
     @classmethod
     def short_path(cls, path):
-        """Removes conf.SRC_DIR from a given path."""
+        """Remove conf.SRC_DIR from a given path."""
         return path.partition("%s%s" % (cls.SRC_DIR, '/'))[2]
 
 
 def get_arguments():
-    """Prompts user for a source directory and an optional settings module."""
+    """Prompt user for a source directory and an optional settings module."""
     parser = argparse.ArgumentParser(
         description='Watch a directory and run a custom set of tests whenever'
                     ' a file changes.')
