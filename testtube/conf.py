@@ -22,7 +22,6 @@ class Settings(object):
     @classmethod
     def get_settings(cls, settings_module):
         """Set class attributes equal to uppercased attributes of a module."""
-        print settings_module, os.path.join(os.getcwd(), settings_module)
         settings = imp.load_source(
             'settings', os.path.join(os.getcwd(), settings_module))
 
