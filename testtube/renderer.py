@@ -33,8 +33,8 @@ class Renderer(object):
         self.notice("Test Report\n")
 
         for count, group in enumerate(results, 1):
-            results = (', ').join(
-                self._format_test(test, res) for test, res in group)
+            results = (self._format_test(test, res) for test, res in group)
+            results = (', ').join(results)
             self.notice("Test group %s:\t%s" % (count, results))
 
         self.divider()

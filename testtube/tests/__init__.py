@@ -6,6 +6,6 @@ else:
     import unittest  # NOQA
 
 if sys.version_info < (3,):
-    from mock import Mock, patch, ANY  # NOQA
+    from mock import call, Mock, patch, ANY  # NOQA
 else:
-    from unittest.mock import Mock, patch, ANY  # NOQA
+    from unittest.mock import call, Mock, patch, ANY  # NOQA
