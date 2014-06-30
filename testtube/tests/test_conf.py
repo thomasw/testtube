@@ -1,4 +1,5 @@
 import os
+import sys
 
 from testtube.conf import Settings, get_arguments
 
@@ -33,8 +34,13 @@ class SettingsModuleShortpathMethod(ConfTestCase):
 class GetArguments(unittest.TestCase):
     """get_arguments()"""
     def setUp(self):
+        self.argv = sys.argv
+        sys.argv = ['']
         self.args = get_arguments()
         self.default_path, self.default_settings_module = self.args
+
+    def tearDown(self):
+        sys.argv = self.argv
 
     def test_returns_thew_cwd_as_the_default_path(self):
         self.assertEqual(self.default_path, os.getcwd())
