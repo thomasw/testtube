@@ -17,9 +17,9 @@ PATTERNS = (
         [Flake8(all_files=True), Frosted(all_files=True)],
         {'fail_fast': True}
     ),
-    # Run the test suite whenever python files change
+    # Run the test suite whenever python or test config files change
     (
-        r'.*\.py$',
+        r'(.*setup\.cfg$)|(.*\.coveragerc)|(.*\.py$)',
         [Nosetests()]
     )
 )

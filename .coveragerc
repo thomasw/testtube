@@ -1,0 +1,6 @@
+[report]
+omit =
+    setup.py
+    tube.py
+    testtube/tests/*
+    */site-packages/*

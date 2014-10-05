@@ -5,7 +5,9 @@ import os
 
 
 class Settings(object):
+
     """Testtube settings module."""
+
     # testube default settings
     CWD_SRC_DIR = ''
     SRC_DIR = os.getcwd()
