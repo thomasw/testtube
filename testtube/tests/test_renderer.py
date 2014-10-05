@@ -93,3 +93,30 @@ class RendererReport(RendererTest):
             call('=' * 71),
             call('\n')
         ])
+
+
+class SingleFilesRendererReport(RendererTest):
+    def setUp(self):
+        super(SingleFilesRendererReport, self).setUp()
+        self.fake_test = Mock()
+        self.fake_test.name = 'FakeTest'
+        self.fake_test.changed = 'foo.py'
+        self.fake_test.all_files = False
+        self.renderer.report([
+            [(self.fake_test, True), (self.fake_test, False)],
+            [(self.fake_test, False), (self.fake_test, False)]
+        ])
+
+    def test_outputs_color_coded_test_results_with_short_path(self):
+        success_name = colored('FakeTest ()', 'green')
+        fail_name = colored('FakeTest ()', 'red')
+        self.stdout.write.assert_has_calls([
+            call('Test Report\n'),
+            call('\n'),
+            call('Test group 1:\t%s, %s' % (success_name, fail_name)),
+            call('\n'),
+            call('Test group 2:\t%s, %s' % (fail_name, fail_name)),
+            call('\n'),
+            call('=' * 71),
+            call('\n')
+        ])
