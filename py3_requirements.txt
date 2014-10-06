@@ -2,9 +2,11 @@ termcolor==1.1.0
 watchdog==0.7.1
 
 # Testing requirements
+coverage==3.7.1
 coveralls==0.4.1
 flake8==2.1.0
 frosted==1.4.1
-nose==1.3.1
+nose==1.3.4
 pep257==0.3.2
 pinocchio==0.4.1
+six>=1.2.0
