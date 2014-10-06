@@ -16,6 +16,8 @@ Install testtube like you'd install any other python package:
 pip install testtube
 ```
 
+testtube is tested with Python 2.6, 2.7, and 3.4 and pypy.
+
 ## Usage
 
 ### 1. Configure testtube
