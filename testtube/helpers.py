@@ -63,7 +63,7 @@ class Helper(object):
 
     def setup(self):
         """Prepare the helper class to execute the test."""
-        changed = "all matching files" if self.all_files else self.changed
+        changed = "source directory" if self.all_files else self.changed
         self.renderer.notice(
             'Executing %s against %s.\n' % (self.name, changed))
 

@@ -88,7 +88,7 @@ class Pep8HelperConfiguredToCheckEntireSrcDir(HelperTests):
 
     def test_outputs_test_notice_without_specific_path(self):
         self.renderer.notice.assert_any_call(
-            'Executing Pep8 against all matching files.\n')
+            'Executing Pep8 against source directory.\n')
 
 
 class FrostedHelperConfiguredToCheckAllFiles(HelperTests):
