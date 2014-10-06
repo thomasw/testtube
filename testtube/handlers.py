@@ -1,3 +1,4 @@
+"""Handlers that are invoked when file system changes occur."""
 from watchdog.events import FileSystemEventHandler
 
 from testtube.runner import SuiteRunner
