@@ -136,13 +136,13 @@ The behavior of helpers can be customized as necessary by overriding
 specific methods. See [helpers.py](https://github.com/thomasw/testtube/blob/master/testtube/helpers.py)
 for further information.
 
-In additional to configuring helpers, test groups can also be configured:
+In addition to configuring helpers, test groups can also be configured:
 
-* fail_fast: abort processing of subsequent test groups if all tests in the
+* `fail_fast`: abort processing of subsequent test groups if all tests in the
   configured group did not pass.
 
 In the first example tube.py file, the second test group is configured to abort
-the rest of the test suite if either Flake8 or Frosted fail.
+the rest of the test suite if either `Flake8` or `Frosted` fail.
 
 ### 2. Stir it
 
@@ -172,7 +172,7 @@ optional arguments:
                        to your CWD)
 ```
 
-### Writing your own tests
+## Writing your own tests
 
 If the included helpers don't do what you need, you can write your own tests
 right in your settings module. Simply define a callable that accepts two
