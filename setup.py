@@ -15,7 +15,7 @@ setup(
                 'a change occurs.',
     packages=find_packages(),
     scripts=['testtube/bin/stir'],
-    install_requires=['watchdog==0.7.1'],
+    install_requires=['six>=1.2.0', 'termcolor==1.1.0', 'watchdog==0.7.1'],
     classifiers=[
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Testing',
@@ -24,7 +24,7 @@ setup(
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
     test_suite='nose.collector',

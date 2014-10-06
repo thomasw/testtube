@@ -8,7 +8,7 @@ class PyChangeHandlerTests(unittest.TestCase):
     def setUp(self):
         self.handler = PyChangeHandler()
 
-    @patch("testtube.handlers.run_tests")
-    def test_should_execute_test_runner_with_changed_files(self, run_tests):
+    @patch("testtube.handlers.SuiteRunner")
+    def test_should_execute_test_runner_with_changed_files(self, test_runner):
         self.handler.on_any_event(Mock(src_path='foo.py'))
-        run_tests.assert_called_once_with('foo.py')
+        test_runner.return_value.run.assert_called_once_with('foo.py')

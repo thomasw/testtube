@@ -1,18 +1,43 @@
 """testtube settings module."""
 import argparse
+import imp
 import os
-import sys
 
-# testube settings
-SRC_DIR = None
-PATTERNS = ()
+
+class Settings(object):
+
+    """Testtube settings module."""
+
+    # testube default settings
+    CWD_SRC_DIR = ''
+    SRC_DIR = os.getcwd()
+    PATTERNS = ()
+
+    @classmethod
+    def configure(cls, src_dir, settings):
+        """Configure testtube to use a src directory and settings module."""
+        cls.CWD_SRC_DIR = src_dir
+        cls.SRC_DIR = os.path.realpath(
+            os.path.join(os.getcwd(), cls.CWD_SRC_DIR))
+        cls.get_settings(settings)
+
+    @classmethod
+    def get_settings(cls, settings_module):
+        """Set class attributes equal to uppercased attributes of a module."""
+        settings = imp.load_source(
+            'settings', os.path.join(os.getcwd(), settings_module))
+
+        for setting in (x for x in dir(settings) if x.isupper()):
+            setattr(cls, setting, getattr(settings, setting))
+
+    @classmethod
+    def short_path(cls, path):
+        """Remove conf.SRC_DIR from a given path."""
+        return path.partition("%s%s" % (cls.SRC_DIR, '/'))[2]
 
 
 def get_arguments():
-    """Prompts the user for a source directory and an optional settings
-    module.
-
-    """
+    """Prompt user for a source directory and an optional settings module."""
     parser = argparse.ArgumentParser(
         description='Watch a directory and run a custom set of tests whenever'
                     ' a file changes.')
@@ -20,41 +45,10 @@ def get_arguments():
         '--src_dir', type=str, default=os.getcwd(),
         help='The directory to watch for changes. (Defaults to CWD)')
     parser.add_argument(
-        '--settings', type=str, default='tube',
-        help='The testtube settings module that defines which tests to run.'
-             ' (Defaults to "tube" - your settings module must be importable'
-             ' from your current working directory)')
+        '--settings', type=str, default='tube.py',
+        help='Path to a testtube settings file that defines which tests to run'
+             ' (Defaults to "tube.py" - your settings file must be importable'
+             ' and the path must be relative to your CWD)')
     args = parser.parse_args()
 
     return args.src_dir, args.settings
-
-
-def short_path(path):
-    """Remove conf.SRC_DIR from a given path."""
-    return path.partition("%s%s" % (SRC_DIR, '/'))[2]
-
-
-def configure(src_dir, settings):
-    """Configure the app to use the specified SRC_DIR and extract the
-    relevant settings from the specified settings module.
-
-    """
-    _set_src_dir(src_dir)
-    _get_test_suite_from_settings(settings)
-
-
-def _set_src_dir(src_dir):
-    """Generate an absolute path by merging the cwd with the passed src dir"""
-    global SRC_DIR
-
-    SRC_DIR = os.path.realpath(os.path.join(os.getcwd(), src_dir))
-
-
-def _get_test_suite_from_settings(settings_module):
-    """Import settings_module and extract the relevant settings."""
-    global PATTERNS
-
-    sys.path.append(os.getcwd())
-    settings = __import__(settings_module)
-
-    PATTERNS = settings.PATTERNS

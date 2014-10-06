@@ -1,32 +1,119 @@
+"""Utilities for executing testtube suites against changed files."""
 import re
 
-from testtube import conf
+from testtube.conf import Settings
+from testtube.helpers import HardTestFailure
+from testtube.renderer import Renderer
 
 
-def _inspect_path(path, pattern):
-    """Return True if pattern matches path as well as the set of named
-    subpattern matches.
+class ResultCollection(list):
+
+    """List representing results of testtube test group runs.
+
+    Each entry in the list should be tuple containing a test (Helper subclass
+    or other callable with a similar interface) and a result (bool).
 
     """
-    match = re.match(pattern, path)
 
-    if not match:
-        return False, {}
-
-    return True, match.groupdict()
-
-
-def _test_path(path, tests, kwargs):
-    """Runs a set of tests against a specified path passing kwargs to each."""
-    for test in tests:
-        test(path, **kwargs)
+    @property
+    def passed(self):
+        """Return True if all the tests in the result collection passed."""
+        return all(result for test, result in self)
 
 
-def run_tests(path):
-    """Runs the corresponding tests if path matches against conf.PATTERNS"""
-    for pattern, tests in conf.PATTERNS:
-        run_tests, kwargs = _inspect_path(path, pattern)
+class TestCollection(object):
 
-        if run_tests:
-            _test_path(path, tests, kwargs)
-            print('=' * 58)
+    """Pattern, test list, and config grouping."""
+
+    def __init__(self, pattern, tests, conf=None):
+        """Build a test collection given a regex, a test list and configuration.
+
+        Kwargs:
+        pattern - a regular expression to match against paths of changed files
+        tests - a list of callables to execute against a changed path
+        conf - an optional configuration dict
+
+        Valid conf keys:
+        fail_fast - Causes the test run to abort if any tests in the group fail
+
+        All other values in the conf dict are ignored by default.
+
+        """
+        self.pattern = pattern
+        self.tests = tests
+        self.conf = conf or {}
+
+    @property
+    def fail_fast(self):
+        """Return True if the TestCollection is configured to fail fast.
+
+        Fail fast collections abort subsequent test group processing if any
+        tests in their group fail.
+
+        """
+        return self.conf.get('fail_fast', False)
+
+    def apply(self, path):
+        """Run tests against a path if it matches the configured pattern.
+
+        Returns a ResultCollection containg the success/fail status of the
+        tests in the collection.
+
+        """
+        applicable, regex_match = self._check_path(path)
+        results = ResultCollection()
+
+        if not applicable:
+            return results
+
+        for test in self.tests:
+            result = False
+
+            try:
+                result = test(path, regex_match)
+            except HardTestFailure:
+                result = False
+                break
+            finally:
+                results.append((test, result))
+
+        return results
+
+    def _check_path(self, path):
+        match = re.match(self.pattern, path)
+
+        if not match:
+            return False, {}
+
+        return True, match
+
+
+class SuiteRunner(object):
+
+    """Execute matching test groups against a given path."""
+
+    renderer = Renderer()
+
+    def run(self, path):
+        """Execute matching test groups against a given path."""
+        results = []
+
+        for test_group in Settings.PATTERNS:
+            tests = TestCollection(*test_group)
+            result = tests.apply(path)
+
+            if not result:
+                continue
+
+            results.append(result)
+
+            if not result.passed and tests.fail_fast:
+                self.renderer.failure(
+                    'Aborting subsequent test groups. Fail fast enabled.')
+                self.renderer.divider()
+                break
+
+            self.renderer.divider()
+
+        if results:
+            self.renderer.report(results)
