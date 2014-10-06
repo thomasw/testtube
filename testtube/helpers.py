@@ -27,7 +27,7 @@ class Helper(object):
         self.match = ''
 
     def setup(self):
-        changed = "all matching files" if not self.all_files else self.changed
+        changed = "all matching files" if self.all_files else self.changed
         self.renderer.notice(
             'Executing %s against %s.\n' % (self.name, changed))
 
