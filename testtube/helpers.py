@@ -1,5 +1,7 @@
 import subprocess
 
+from six import iteritems
+
 from testtube.conf import Settings
 from testtube.renderer import Renderer
 
@@ -19,7 +21,7 @@ class Helper(object):
         self.name = self.__class__.__name__
 
         # Override default settings with passed in values.
-        for setting, value in kwargs.iteritems():
+        for setting, value in iteritems(kwargs):
             setattr(self, setting, value)
 
         # These properites are provided by __call__ and are not configurable.

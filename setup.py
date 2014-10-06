@@ -15,7 +15,7 @@ setup(
                 'a change occurs.',
     packages=find_packages(),
     scripts=['testtube/bin/stir'],
-    install_requires=['termcolor==1.1.0', 'watchdog==0.7.1'],
+    install_requires=['six>=1.2.0', 'termcolor==1.1.0', 'watchdog==0.7.1'],
     classifiers=[
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Testing',
