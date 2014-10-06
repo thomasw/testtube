@@ -51,7 +51,7 @@ class TestCollection(object):
         tests in their group fail.
 
         """
-        self.conf.get('fail_fast', False)
+        return self.conf.get('fail_fast', False)
 
     def apply(self, path):
         """Run tests against a path if it matches the configured pattern.
