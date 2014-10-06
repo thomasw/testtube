@@ -214,6 +214,14 @@ PATTERNS = (
 Note that this example requires tree to be installed on your system
 (`$ brew install tree` for OS X users).
 
+## Caveats
+
+* Note the difference between `r'.*\.py'` and `r'.*\.py$'`. If you leave off
+  that `$`, then testtube will run your tests everytime pyc files change.
+* testtube doesn't currently reload its own configuration when it changes. If
+  you reconfigure things, you'll need to kill testtube and restart it for those
+  changes to take effect.
+
 ## Everything else
 
 Copyright (c) [Thomas Welfley](http://welfley.me). See
