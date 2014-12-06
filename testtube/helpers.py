@@ -200,3 +200,28 @@ class PythonSetupPyTest(Helper):
     def get_args(self):
         """Return list of arguments for `python`."""
         return ['setup.py', 'test']
+
+
+class Rake(Helper):
+
+    r"""Execute rake tasks.
+
+    Example:
+
+        from testtube.helpers import Rake
+
+        run_migrations = Rake(tasks=['db:migrate'])
+        run_specs = Rake(tasks=['spec', 'spec:integration'])
+
+        PATTERNS = (
+            (r'migrations/.+\.rb', [run_migrations]),
+            (r'.+\.rb$', [run_specs])
+        )
+
+    """
+
+    command = 'rake'
+
+    def get_args(self):
+        """Return the configured list of tasks."""
+        return self.tasks

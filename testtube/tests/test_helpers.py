@@ -1,7 +1,7 @@
 from . import Mock, patch, unittest
 
 from testtube.helpers import (
-    Frosted, HardTestFailure, Nosetests, Pep8, PythonSetupPyTest)
+    Frosted, HardTestFailure, Nosetests, Pep8, PythonSetupPyTest, Rake)
 
 
 class HelperTests(unittest.TestCase):
@@ -125,3 +125,12 @@ class PythonSetupPyHelper(HelperTests):
         """always uses 'setup.py test' as args"""
         self.subprocess.call.assert_called_once_with(
             ['python', 'setup.py', 'test'])
+
+
+class RakeHelper(HelperTests):
+    helper_class = Rake
+    helper_conf = {'tasks': ['task1', 'task2']}
+
+    def test_runs_specified_tasks_with_rake(self):
+        self.subprocess.call.assert_called_once_with(
+            ['rake', 'task1', 'task2'])
