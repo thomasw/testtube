@@ -10,7 +10,7 @@ class ConfTestCase(unittest.TestCase):
     def setUp(self):
         self.settings = test_settings
         self.settings = Settings
-        self.settings.configure('foo/', 'testtube/tests/test_settings.py')
+        self.settings.configure('foo/', 'tests/test_settings.py')
 
 
 class SettingsModuleConfigureMethod(ConfTestCase):
