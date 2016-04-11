@@ -1,5 +1,11 @@
 # Changelog
 
+## Dev
+
+* Dev environment simplifcation
+* Fixes a bug in the nosetests helper implementation that was making it ignore
+  passed in configuration.
+
 ## 1.0.0
 
 * Make tests configurable
