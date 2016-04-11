@@ -162,7 +162,7 @@ class Nosetests(Helper):
         all_files=False will be ignored.
 
         """
-        super(Nosetests, self).__init__()
+        super(Nosetests, self).__init__(**kwargs)
 
         # Nosetests only works on all files, so override any config for this
         # value.

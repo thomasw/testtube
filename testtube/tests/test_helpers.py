@@ -110,11 +110,14 @@ class FrotedHelperNotConfiguredToCheckAllFiles(HelperTests):
 
 
 class NosetestsHelper(HelperTests):
-    helper_conf = {'all_files': False}
+    helper_conf = {'all_files': False, 'name': 'tests'}
     helper_class = Nosetests
 
     def test_doesnt_allow_itself_to_be_configured_to_check_single_files(self):
         self.assertTrue(self.helper.all_files)
+
+    def test_does_allow_itself_to_be_configured_with_other_options(self):
+        self.assertEqual(self.helper.name, 'tests')
 
 
 class PythonSetupPyHelper(HelperTests):
