@@ -1,7 +1,14 @@
 import multiprocessing  # noqa `python setup.py test` fix for python 2.6
 from setuptools import setup, find_packages
+import sys
 
 from testtube import __author__, __doc__, __version__
+
+
+tests_require = ['nose==1.3.7', 'unittest2==1.1.0', 'spec==1.3.1']
+
+if sys.version_info[:2] < (3, 3):  # mock was added to the stdlib in 3.3
+    tests_require.append('mock==1.3.0')
 
 
 setup(
@@ -14,8 +21,7 @@ setup(
     packages=find_packages(),
     scripts=['testtube/bin/stir'],
     install_requires=['six>=1.2.0', 'termcolor==1.1.0', 'watchdog==0.7.1'],
-    tests_require=[
-        'mock==1.3.0', 'nose==1.3.7', 'unittest2==1.1.0', 'spec==1.3.1'],
+    tests_require=tests_require,
     license='MIT',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
