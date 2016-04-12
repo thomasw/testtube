@@ -15,7 +15,7 @@ setup(
     scripts=['testtube/bin/stir'],
     install_requires=['six>=1.2.0', 'termcolor==1.1.0', 'watchdog==0.7.1'],
     tests_require=[
-        'mock==2.0.0', 'nose==1.3.7', 'unittest2==1.1.0', 'spec==1.3.1'],
+        'mock==1.3.0', 'nose==1.3.7', 'unittest2==1.1.0', 'spec==1.3.1'],
     license='MIT',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
