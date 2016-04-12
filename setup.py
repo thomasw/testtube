@@ -1,3 +1,4 @@
+from codecs import open
 import multiprocessing  # noqa `python setup.py test` fix for python 2.6
 from setuptools import setup, find_packages
 import sys
@@ -10,6 +11,11 @@ tests_require = ['nose==1.3.7', 'unittest2==1.1.0', 'spec==1.3.1']
 if sys.version_info[:2] < (3, 3):  # mock was added to the stdlib in 3.3
     tests_require.append('mock==1.3.0')
 
+with open('README.rst', 'r', 'utf-8') as f:
+    readme = f.read()
+
+with open('CHANGELOG.rst', 'r', 'utf-8') as f:
+    changelog = f.read()
 
 setup(
     name='testtube',
@@ -18,6 +24,7 @@ setup(
     author=__author__,
     author_email='thomas.welfley+testtube@gmail.com',
     description=__doc__,
+    long_description='%s\n\n%s' % (readme, changelog),
     packages=find_packages(),
     scripts=['testtube/bin/stir'],
     install_requires=['six>=1.2.0', 'termcolor==1.1.0', 'watchdog==0.7.1'],
