@@ -5,7 +5,6 @@ import os
 
 
 class Settings(object):
-
     """Testtube settings module."""
 
     # testube default settings

@@ -8,14 +8,12 @@ from testtube.renderer import Renderer
 
 
 class HardTestFailure(Exception):
-
     """Test failure that should abort test processing."""
 
     pass
 
 
 class Helper(object):
-
     """Generic helper class for writing callable testtube tests.
 
     When a test that extends Helper is instantiated and called, it will:
@@ -118,27 +116,24 @@ class Helper(object):
 
 
 class Pep8(Helper):
-
     """Execute PEP8 against a file or configured project directory."""
 
     command = 'pep8'
 
 
 class Pyflakes(Helper):
-
     """Execute pyflakes against a file or configured project directory."""
 
     command = 'pyflakes'
 
 
 class Frosted(Helper):
-
     """Execute pyflakes against a file or configured project directory."""
 
     command = 'frosted'
 
     def get_args(self):
-        """ Generate frosted arguments."""
+        """Generate frosted arguments."""
         if self.all_files:
             return ['-r', Settings.SRC_DIR]
 
@@ -146,7 +141,6 @@ class Frosted(Helper):
 
 
 class Nosetests(Helper):
-
     """Execute nosetests in the configured project directory.
 
     Note that this helper cannot be configured to run against only the
@@ -178,21 +172,18 @@ class Nosetests(Helper):
 
 
 class Flake8(Helper):
-
     """Execute flake8 against a file or configured project directory."""
 
     command = 'flake8'
 
 
 class Pep257(Helper):
-
     """Execute pep257 against a file or configured project directory."""
 
     command = 'pep257'
 
 
 class PythonSetupPyTest(Helper):
-
     """Execute `python setup.py test`."""
 
     command = 'python'
