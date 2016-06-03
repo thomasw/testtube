@@ -1,6 +1,4 @@
 """Automatically runs a set of tests against a project on file update."""
-import time
-
 from watchdog.observers import Observer
 
 from testtube.conf import get_arguments, Settings
@@ -15,16 +13,16 @@ def main():
     renderer = Renderer()
 
     observer = Observer()
+    observer.daemon = True
     observer.schedule(PyChangeHandler(), Settings.SRC_DIR, recursive=True)
     observer.start()
 
+    observer.join(1)  # Give the observer thread some time to start up.
     renderer.notice(
         'testtube is now watching %s for changes...\n' % Settings.SRC_DIR)
 
     try:
         while True:
-            time.sleep(1)
+            observer.join(1)
     except KeyboardInterrupt:
-        observer.stop()
-
-    observer.join()
+        pass
