@@ -11,6 +11,7 @@ class Settings(object):
     CWD_SRC_DIR = ''
     SRC_DIR = os.getcwd()
     PATTERNS = ()
+    IGNORE_PATTERNS = ()
 
     @classmethod
     def configure(cls, src_dir, settings):

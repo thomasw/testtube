@@ -141,3 +141,22 @@ class SuiteRunnerTests(unittest.TestCase):
     def test_outputs_fail_fast_messaging_if_ff_test_group_fails(self):
         self.runner.renderer.failure.assert_called_once_with(
             'Aborting subsequent test groups. Fail fast enabled.')
+
+
+class SuiteRunnerWithIgnorePatternsConfigured(unittest.TestCase):
+    def setUp(self):
+        SuiteRunner.renderer = Mock()
+        self.test = Mock()
+
+        settings_patcher = patch('testtube.runner.Settings')
+        self.addCleanup(settings_patcher.stop)
+        self.Settings = settings_patcher.start()
+
+        self.Settings.PATTERNS = [(r'.*', [self.test])]
+        self.Settings.IGNORE_PATTERNS = (r'yay\.txt',)
+
+        self.runner = SuiteRunner()
+        self.runner.run('yay.txt')
+
+    def test_ignores_paths_matching_IGNORE_PATTERNS(self):
+        self.test.assert_not_called()
