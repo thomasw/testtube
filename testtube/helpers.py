@@ -191,3 +191,28 @@ class PythonSetupPyTest(Helper):
     def get_args(self):
         """Return list of arguments for `python`."""
         return ['setup.py', 'test']
+
+
+class ClearScreen(Helper):
+    """Clear the contents of the terminal window."""
+
+    command = 'clear'
+
+    def __init__(self, **kwargs):
+        """Generate a `ClearScreen` callable.
+
+        all_files=False will be ignored because this helper doesn't operate
+        on specific files.
+
+        """
+        kwargs['all_files'] = True
+
+        super(ClearScreen, self).__init__(**kwargs)
+
+    def success(self, *args):
+        """Output nothing on successs."""
+        pass
+
+    def setup(self):
+        """Output nothing on test setup."""
+        pass

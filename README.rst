@@ -93,6 +93,7 @@ Included helpers:
 -  Pep257
 -  Nosetests
 -  PythonSetupPyTest (runs python setup.py when matching files change)
+-  ClearScreen
 
 Helpers typically accept the following arguments when instantiated:
 
