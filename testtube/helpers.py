@@ -153,14 +153,12 @@ class Nosetests(Helper):
     def __init__(self, **kwargs):
         """Generate a `nosetests` callable.
 
-        all_files=False will be ignored.
+        all_files=False will be ignored. This helper can only operate on
+        all files.
 
         """
+        kwargs['all_files'] = True
         super(Nosetests, self).__init__(**kwargs)
-
-        # Nosetests only works on all files, so override any config for this
-        # value.
-        self.all_files = True
 
     def get_args(self, *args, **kwargs):
         """Return empty list of arguments.
