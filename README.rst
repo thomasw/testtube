@@ -67,18 +67,27 @@ Here's an example ``tube.py`` file:
         )
     )
 
-In the example above, there are a series of patterns, coupled with a
-list of callable tests generated via builtin helpers and, in one case,
-an optional test group configuration.
+    # Don't process any file changes that match these rules
+    IGNORE_PATTERNS = (
+        r'.*sample/[^/]*$',
+    )
 
-A test, at its simplest, is just a method that returns ``True`` or
+In the example above, `PATTERNS` contains a series of patterns, coupled with a
+list of callable tests. The second test group, which calls Flake8 and Frosted,
+includes an optional test group configuration.
+
+An iterable named `IGNORE_PATTERNS` is also specified. Any paths that match
+these patterns will be ignored regardless of whether or not they also match a
+test group defined in `PATTERNS`.
+
+A test, at its simplest, is just a callable that returns ``True`` or
 ``False`` after being passed the path to a changed file and a regular
-expression match object for the path's match against the test group's
-regular expression. The example uses several helpers that ship with
+expression match object for the path's match against the corresponding test
+group's regular expression. The example uses several helpers that ship with
 testtube. These helpers are callable objects that can be configured in
 various ways when they are instantiated.
 
-Testtube comes with a number of these helpers, which can be found in
+Testtube comes with a number of such helpers, which can be found in
 `helpers.py <https://github.com/thomasw/testtube/blob/master/testtube/helpers.py>`_.
 They are designed to save consumers from specifying their own tests as much as
 is possible. If they are insufficient for a specific project, please see
@@ -92,7 +101,7 @@ Included helpers:
 -  Pep257
 -  Nosetests
 -  PythonSetupPyTest (runs python setup.py when matching files change)
--  ClearScreen
+-  ClearScreen (clears the screen)
 
 Helpers typically accept the following arguments when instantiated:
 
