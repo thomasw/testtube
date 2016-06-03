@@ -1,5 +1,11 @@
 from testtube.helpers import Nosetests, Pep257, Flake8, ClearScreen
 
+# Don't process any file changes that match these rules
+IGNORE_PATTERNS = (
+    # The integration tests changes .py files in this directory. If we don't
+    # ignore them, testtube will see these changes and loop forever.
+    r'.*sample/[^/]*$',
+)
 
 PATTERNS = (
     # Clear the last set of test results because we're about to have more
