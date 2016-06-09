@@ -237,11 +237,10 @@ python file changes:
         all_files = True
 
         def __init__(self, **kwargs):
-            super(ProjectTree, self).__init__(kwargs)
+            # TreeOutput only works on all files, so override any contrary conf
+            kwargs['all_files'] = True
 
-            # TreeOutput only works on all files, so override any contrary
-            # config
-            self.all_files = True
+            super(ProjectTree, self).__init__(kwargs)
 
     PATTERNS = (
         (r'.*\.py$', [ProjectTree(bells=1)]),
