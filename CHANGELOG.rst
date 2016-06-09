@@ -4,9 +4,16 @@ Changelog
 Dev
 ---
 
--  Dev environment simplifcation
--  Fixes a bug in the nosetests helper implementation that was making it
+-  Simplify dev evnironment configuration.
+-  Add tox configuration for locally testing against multiple python versions.
+-  Fix a bug in the nosetests helper implementation that was making it
    ignore passed in configuration.
+-  Fix a bug that causing testtube to choke on simple method based tests.
+-  Add an ``IGNORE_PATTERNS`` configuration option which supersedes test group
+   pattern matches and allows users to confiure testtube to always ignore
+   certain files.
+-  Add integration tests.
+-  Factor out threading anti-patterns from core (``time.sleep()``).
 
 1.0.0
 -----

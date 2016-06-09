@@ -5,11 +5,8 @@ from termcolor import colored
 
 from testtube.conf import Settings
 
-# For python3 support, we must use print as a function rather than a statement
-
 
 class Renderer(object):
-
     """Utility that outputs formatted messages."""
 
     def failure(self, message=''):
@@ -46,8 +43,12 @@ class Renderer(object):
     def _format_test(self, test, result):
         color = 'green' if result else 'red'
         files = ''
+        all_files = getattr(test, 'all_files', True)
+        name = (
+            getattr(test, 'name', None) or getattr(test, '__name__', None) or
+            'test')
 
-        if not test.all_files:
+        if not all_files:
             files = ' (%s)' % Settings.short_path(test.changed)
 
-        return colored('%s%s' % (test.name, files), color)
+        return colored('%s%s' % (name, files), color)

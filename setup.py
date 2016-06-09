@@ -27,7 +27,7 @@ setup(
     long_description='%s\n\n%s' % (readme, changelog),
     packages=find_packages(),
     scripts=['testtube/bin/stir'],
-    install_requires=['six>=1.2.0', 'termcolor==1.1.0', 'watchdog==0.7.1'],
+    install_requires=['six>=1.2.0', 'termcolor==1.1.0', 'watchdog==0.8.3'],
     tests_require=tests_require,
     license='MIT',
     classifiers=[

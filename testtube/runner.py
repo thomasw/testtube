@@ -6,8 +6,17 @@ from testtube.helpers import HardTestFailure
 from testtube.renderer import Renderer
 
 
-class ResultCollection(list):
+def _check_path(pattern, path):
+    """Using the specified pattern check the path to see if it matches."""
+    match = re.match(pattern, path)
 
+    if not match:
+        return False, {}
+
+    return True, match
+
+
+class ResultCollection(list):
     """List representing results of testtube test group runs.
 
     Each entry in the list should be tuple containing a test (Helper subclass
@@ -22,7 +31,6 @@ class ResultCollection(list):
 
 
 class TestCollection(object):
-
     """Pattern, test list, and config grouping."""
 
     def __init__(self, pattern, tests, conf=None):
@@ -60,7 +68,7 @@ class TestCollection(object):
         tests in the collection.
 
         """
-        applicable, regex_match = self._check_path(path)
+        applicable, regex_match = _check_path(self.pattern, path)
         results = ResultCollection()
 
         if not applicable:
@@ -79,24 +87,27 @@ class TestCollection(object):
 
         return results
 
-    def _check_path(self, path):
-        match = re.match(self.pattern, path)
-
-        if not match:
-            return False, {}
-
-        return True, match
-
 
 class SuiteRunner(object):
-
     """Execute matching test groups against a given path."""
 
     renderer = Renderer()
 
+    def _ignore_path(self, path):
+        for ignore_pattern in Settings.IGNORE_PATTERNS:
+            ignore, match = _check_path(ignore_pattern, path)
+
+            if ignore:
+                return True
+
+        return False
+
     def run(self, path):
         """Execute matching test groups against a given path."""
         results = []
+
+        if self._ignore_path(path):
+            return
 
         for test_group in Settings.PATTERNS:
             tests = TestCollection(*test_group)
