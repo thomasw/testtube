@@ -102,25 +102,3 @@ class IntegrationTest(TestCase):
 
         """
         call(['touch', os.path.join(SAMPLE_PROJECT, filename)])
-
-    def wait_for_output(self, text, wait_increment=.1, timeout=5):
-        """Checks self.process.output for some specified output string."""
-        output = ''
-        total_time = 0
-
-        while total_time < timeout:
-            try:
-                output += self.process.output.get(timeout=wait_increment)
-            except Empty:
-                # To ensure that we aren't incrementing when we didn't have
-                # to wait, we only increment in the event of an Empty exception
-                # Technically, this implementation isn't accurate, but it's
-                # close enough and solves the problem of needing to empty the
-                # output queue with a separate loop before we start our get()
-                # calls.
-                total_time += wait_increment
-
-            if text in output:
-                return output
-
-        return output
