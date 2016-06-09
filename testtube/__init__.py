@@ -6,4 +6,4 @@ a directory for file changes and execute a pre-configured set of tests when
 changes occur.
 """
 __author__ = "Thomas Welfley"
-__version__ = "1.0.0"
+__version__ = "1.1.0"

@@ -1,8 +1,8 @@
 Changelog
 =========
 
-Dev
----
+1.1.0
+-----
 
 -  Simplify dev evnironment configuration.
 -  Add tox configuration for locally testing against multiple python versions.
