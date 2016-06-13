@@ -72,13 +72,13 @@ Here's an example ``tube.py`` file:
         r'.*sample/[^/]*$',
     )
 
-In the example above, `PATTERNS` contains a series of patterns, coupled with a
+In the example above, ``PATTERNS`` contains a series of patterns, coupled with a
 list of callable tests. The second test group, which calls Flake8 and Frosted,
 includes an optional test group configuration.
 
-An iterable named `IGNORE_PATTERNS` is also specified. Any paths that match
+An iterable named ``IGNORE_PATTERNS`` is also specified. Any paths that match
 these patterns will be ignored regardless of whether or not they also match a
-test group defined in `PATTERNS`.
+test group defined in ``PATTERNS``.
 
 A test, at its simplest, is just a callable that returns ``True`` or
 ``False`` after being passed the path to a changed file and a regular
@@ -206,7 +206,7 @@ Writing custom tests
 
 If the included helpers don't meet the specific needs of a project, custom tests
 can be defined directly in tube.py. Simply define a callable that accepts two
-arguments and add it to the ```PATTERNS`` list:
+arguments and add it to the ``PATTERNS`` list:
 
 .. code:: python
 
@@ -270,7 +270,7 @@ Install the development requirements using the included requirements.txt file:
 It is often useful to use to use the checkout of testtube that's currently under
 development to monitor itself using its included tube.py file. Use testtube to
 help build testtube. This can be achieved by installing the checkout as an
-editable. Execute the following from the project root and then use the `stir`
+editable. Execute the following from the project root and then use the ``stir``
 command as one usually would:
 
 ::
