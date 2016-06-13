@@ -91,7 +91,7 @@ Testtube comes with a number of such helpers, which can be found in
 `helpers.py <https://github.com/thomasw/testtube/blob/master/testtube/helpers.py>`_.
 They are designed to save consumers from specifying their own tests as much as
 is possible. If they are insufficient for a specific project, please see
-`Writing custom tests <#writing-custom-tests>`_.
+`Writing custom tests`_.
 
 Included helpers:
 
