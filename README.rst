@@ -219,7 +219,7 @@ arguments and add it to the ``PATTERNS`` list:
 
 If a custom test needs to be configurable like the builtin helpers or if it
 needs to make system calls, extending the base helper class
-(``testtube.helpers.Helper``) and customizing the beahvior as is necessary is
+(``testtube.helpers.Helper``) and customizing the behavior as is necessary is
 usually the simplest approach. The following is a tube.py file which defines a
 configureable test that outputs the file tree for the entire project each time a
 python file changes:
@@ -253,7 +253,7 @@ Caveats
 -------
 
 -  The distinction between ``r'.*\.py'`` and ``r'.*\.py$'`` is significant.
-   Without the trailing ``$``, testtube will run tests everytime pyc
+   Without the trailing ``$``, testtube will run tests every time pyc
    files change. That's very likely to not be useful.
 -  testtube doesn't currently reload its own configuration when it
    changes. If tube.py is modified, testtube will need to be restarted.
