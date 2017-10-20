@@ -1,7 +1,7 @@
 Testtube
 ========
 
-|Build Status| |Coverage Status| |Latest Version| |Downloads|
+|Build Status| |Coverage Status| |Latest Version|
 
 Spare your alt and tab keys by automatically running your project's test
 suite whenever files change.
@@ -11,8 +11,6 @@ suite whenever files change.
 .. |Coverage Status| image:: https://img.shields.io/coveralls/thomasw/testtube.svg
    :target: https://coveralls.io/r/thomasw/testtube
 .. |Latest Version| image:: https://img.shields.io/pypi/v/testtube.svg
-   :target: https://pypi.python.org/pypi/testtube/
-.. |Downloads| image:: https://img.shields.io/pypi/dm/testtube.svg
    :target: https://pypi.python.org/pypi/testtube/
 
 Installation
